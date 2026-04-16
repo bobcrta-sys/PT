@@ -1,18 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rutgers Nightly Checklist</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        h1 { color: #333; }
+        .checklist { list-style-type: none; padding: 0; }
+        .checklist-item { margin: 10px 0; }
+        .checklist-item input[type='checkbox'] { margin-right: 10px; }
+        #submit { margin-top: 20px; padding: 10px 20px; background-color: #28a745; color: white; border: none; cursor: pointer; }
+        #submit:hover { background-color: #218838; }
+    </style>
 </head>
 <body>
     <h1>Rutgers Nightly Checklist</h1>
-    <ul>
-        <li>Check system status</li>
-        <li>Backup data</li>
-        <li>Update software</li>
-        <li>Monitor logs</li>
-        <li>Check user accounts</li>
-    </ul>
+    <form id="checklistForm">
+        <ul class="checklist">
+            <li class="checklist-item"><input type="checkbox" id="task1"> <label for="task1">Task 1: Check supplies</label></li>
+            <li class="checklist-item"><input type="checkbox" id="task2"> <label for="task2">Task 2: Prepare equipment</label></li>
+            <li class="checklist-item"><input type="checkbox" id="task3"> <label for="task3">Task 3: Review safety protocols</label></li>
+            <li class="checklist-item"><input type="checkbox" id="task4"> <label for="task4">Task 4: Confirm staff assignments</label></li>
+        </ul>
+        <button type="button" id="submit">Submit</button>
+    </form>
+    <script>
+        const form = document.getElementById('checklistForm');
+        const submitButton = document.getElementById('submit');
+        submitButton.addEventListener('click', function() {
+            const tasks = [];
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                tasks.push({ task: checkbox.nextSibling.textContent, completed: checkbox.checked });
+            });
+            console.log('Checklist Tasks:', tasks);
+            alert('Checklist submitted! Check console for details.');
+        });
+    </script>
 </body>
 </html>
