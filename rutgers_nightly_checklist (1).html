@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice & Teaching Area — Nightly Checklist | Rutgers Golf Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --scarlet: #CC0033;
+    --scarlet-dark: #99001F;
+    --scarlet-mid: #E8003A;
+    --scarlet-tint: #F9EBF0;
+    --scarlet-border: #F0C0CC;
+    --gray-900: #1A1A1A;
+    --gray-700: #3D3D3D;
+    --gray-500: #6B6B6B;
+    --gray-300: #C8C8C8;
+    --gray-100: #F4F4F2;
+    --white: #FFFFFF;
+    --success-bg: #F0F7EA;
+    --success-border: #B8DCA0;
+    --success-text: #3A6B1F;
+    --warn-bg: #FFF8E6;
+    --warn-border: #FFD97A;
+  }
+
+  html { font-size: 16px; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #EDEBE6;
+    min-height: 100vh;
+    color: var(--gray-700);
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,0,0,0.03) 39px, rgba(0,0,0,0.03) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,0,0,0.03) 39px, rgba(0,0,0,0.03) 40px);
+  }
+
+  .page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2.5rem 1rem 4rem;
+  }
+
+  /* ── Header ── */
+  .card-header {
+    background: var(--scarlet);
+    border-radius: 14px 14px 0 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .header-stripe {
+    height: 5px;
+    background: repeating-linear-gradient(90deg, #000 0px, #000 20px, var(--scarlet-dark) 20px, var(--scarlet-dark) 22px);
+    opacity: 0.18;
+  }
+
+  .header-inner {
+    padding: 1.5rem 1.75rem 1.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.1rem;
+  }
+
+  .ru-seal {
+    width: 54px;
+    height: 54px;
+    background: white;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .ru-seal-r {
+    font-family: 'Source Serif 4', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--scarlet);
+    line-height: 1;
+  }
+
+  .ru-seal-u {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 7.5px;
+    font-weight: 600;
+    color: var(--scarlet);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .header-text h1 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: white;
+    line-height: 1.3;
+  }
+
+  .header-text .subtitle {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.72);
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── Body card ── */
+  .card-body {
+    background: var(--white);
+    border: 1px solid #DDD;
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    padding: 1.75rem;
+    animation: fadeUp 0.35s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Section label ── */
+  .slabel {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+  }
+
+  /* ── Meta row ── */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (max-width: 480px) {
+    .meta-grid { grid-template-columns: 1fr; }
+  }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+
+  .field input, .field select {
+    height: 38px;
+    border: 1px solid var(--gray-300);
+    border-radius: 7px;
+    padding: 0 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    color: var(--gray-900);
+    background: var(--gray-100);
+    transition: border-color 0.15s, background 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--scarlet);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(204,0,51,0.1);
+  }
+
+  /* ── Shift buttons ── */
+  .shift-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .shift-btn {
+    flex: 1;
+    height: 38px;
+    border: 1px solid var(--gray-300);
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--gray-100);
+    color: var(--gray-500);
+    transition: all 0.15s;
+  }
+
+  .shift-btn:hover { border-color: var(--scarlet); color: var(--scarlet); background: var(--scarlet-tint); }
+
+  .shift-btn.active {
+    background: var(--scarlet);
+    border-color: var(--scarlet);
+    color: white;
+    box-shadow: 0 2px 8px rgba(204,0,51,0.25);
+  }
+
+  /* ── Hopper photo upload ── */
+  .hopper-upload {
+    margin-bottom: 1.5rem;
+    border: 1.5px dashed var(--gray-300);
+    border-radius: 10px;
+    padding: 1.1rem;
+    transition: border-color 0.15s, background 0.15s;
+    background: var(--gray-100);
+  }
+
+  .hopper-upload.has-image {
+    border-color: var(--scarlet);
+    background: var(--scarlet-tint);
+  }
+
+  .hopper-upload-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .hopper-upload-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid var(--gray-300);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s;
+  }
+
+  .hopper-upload.has-image .hopper-upload-icon {
+    background: var(--scarlet);
+    border-color: var(--scarlet);
+  }
+
+  .hopper-upload-label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    text-align: center;
+  }
+
+  .hopper-upload-sub {
+    font-size: 0.72rem;
+    color: var(--gray-500);
+    text-align: center;
+  }
+
+  #hopper-file { display: none; }
+
+  #hopper-preview-wrap {
+    display: none;
+    margin-top: 10px;
+    position: relative;
+  }
+
+  #hopper-preview {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 7px;
+    border: 1px solid var(--scarlet-border);
+    display: block;
+  }
+
+  .hopper-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.55);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+
+  .hopper-remove:hover { background: rgba(204,0,51,0.85); }
+
+  /* ── Checklist ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .clear-btn {
+    font-size: 0.72rem;
+    color: var(--gray-500);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: inherit;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .clear-btn:hover { background: var(--gray-100); color: var(--gray-700); }
+
+  .checklist { list-style: none; margin-bottom: 1.25rem; }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .check-item:hover { background: #FEF4F7; border-color: var(--scarlet-border); }
+
+  .check-item.done { background: var(--success-bg); border-color: var(--success-border); }
+
+  .check-item.done:hover { background: #E8F4E0; }
+
+  .checkbox {
+    width: 21px;
+    height: 21px;
+    border-radius: 5px;
+    border: 1.5px solid var(--gray-300);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    background: white;
+  }
+
+  .check-item.done .checkbox {
+    background: var(--scarlet);
+    border-color: var(--scarlet);
+  }
+
+  .check-icon {
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .check-item.done .check-icon { opacity: 1; }
+
+  .item-label {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--gray-700);
+    transition: color 0.15s;
+  }
+
+  .check-item.done .item-label {
+    color: var(--success-text);
+    text-decoration: line-through;
+    text-decoration-color: #A0C080;
+  }
+
+  /* ── Progress ── */
+  .progress-wrap {
+    margin: 1.25rem 0;
+    padding: 1rem 1.1rem;
+    background: var(--gray-100);
+    border-radius: 9px;
+    border: 1px solid #E6E4DF;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+
+  .progress-meta .plabel { font-size: 0.78rem; color: var(--gray-500); }
+
+  .progress-meta .pcount {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .progress-meta .pcount span { color: var(--scarlet); }
+
+  .progress-bar {
+    height: 7px;
+    background: #DDD;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--scarlet), var(--scarlet-mid));
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: #EBEBEB;
+    margin: 1.5rem 0;
+  }
+
+  /* ── Email section ── */
+  .recipients {
+    margin-bottom: 1rem;
+  }
+
+  .recipient-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .recipient-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--gray-100);
+    border-radius: 7px;
+    border: 1px solid #E0DED9;
+  }
+
+  .recipient-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--scarlet);
+    flex-shrink: 0;
+  }
+
+  .recipient-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--gray-700);
+  }
+
+  .recipient-email {
+    font-size: 0.78rem;
+    color: var(--gray-500);
+    margin-left: auto;
+  }
+
+  @media (max-width: 480px) {
+    .recipient-email { display: none; }
+  }
+
+  .notes-field {
+    margin-bottom: 1.25rem;
+  }
+
+  .notes-field textarea {
+    width: 100%;
+    min-height: 72px;
+    border: 1px solid var(--gray-300);
+    border-radius: 7px;
+    padding: 9px 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    color: var(--gray-900);
+    background: var(--gray-100);
+    resize: vertical;
+    transition: border-color 0.15s, background 0.15s;
+    line-height: 1.5;
+  }
+
+  .notes-field textarea:focus {
+    outline: none;
+    border-color: var(--scarlet);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(204,0,51,0.1);
+  }
+
+  /* ── Submit ── */
+  .submit-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .submit-btn {
+    flex: 1;
+    height: 44px;
+    background: var(--scarlet);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.2px;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .submit-btn:hover {
+    background: var(--scarlet-dark);
+    box-shadow: 0 4px 14px rgba(204,0,51,0.3);
+  }
+
+  .submit-btn:active { transform: scale(0.985); }
+
+  /* ── Alerts ── */
+  .alert {
+    border-radius: 7px;
+    padding: 9px 12px;
+    font-size: 0.82rem;
+    margin-top: 10px;
+    display: none;
+    line-height: 1.5;
+  }
+
+  .alert-warn { background: var(--warn-bg); border: 1px solid var(--warn-border); color: #7A5B00; }
+  .alert-info { background: #EDF4FF; border: 1px solid #B3D0F5; color: #1A4E8A; }
+  .alert-success { background: var(--success-bg); border: 1px solid var(--success-border); color: var(--success-text); }
+
+  /* ── Footer ── */
+  .page-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.72rem;
+    color: #999;
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="card-header">
+    <div class="header-stripe"></div>
+    <div class="header-inner">
+      <div class="ru-seal">
+        <div class="ru-seal-r">R</div>
+        <div class="ru-seal-u">RUTGERS</div>
+      </div>
+      <div class="header-text">
+        <h1>Practice &amp; Teaching Area<br>Nightly Checklist</h1>
+        <div class="subtitle">Rutgers University Golf Course &nbsp;·&nbsp; Piscataway, NJ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+
+    <!-- Meta -->
+    <div class="meta-grid">
+      <div class="field">
+        <div class="slabel">Date</div>
+        <input type="date" id="check-date">
+      </div>
+      <div class="field">
+        <div class="slabel">Staff Name</div>
+        <input type="text" id="staff-name" placeholder="Enter your name">
+      </div>
+    </div>
+
+    <!-- Shift -->
+    <div class="slabel">Shift</div>
+    <div class="shift-group">
+      <button class="shift-btn" id="shift-am" onclick="selectShift('AM')">AM Shift</button>
+      <button class="shift-btn" id="shift-pm" onclick="selectShift('PM')">PM Shift</button>
+    </div>
+
+    <!-- Checklist -->
+    <div class="section-header">
+      <div class="slabel" style="margin:0">Checklist Items</div>
+      <button class="clear-btn" onclick="clearAll()">Clear all</button>
+    </div>
+
+    <ul class="checklist" id="checklist">
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Bring in any teaching equipment that may have been left out in the teaching area</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Sweep the floor in the PT building and mop floor underneath the ball tray and cleaner. Pick up any deer scat with a dustbroom and throw in the woods — do <strong>not</strong> throw out on the rocks by the pump at the back door</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Empty all garbage cans (inside building, behind stalls, and inside Golf Team area)</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Check the condition of the mats and rotate them 1/4 turn in the rubber mat if it shows heavy wear</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Check the condition of the hitting panels and replace as needed; also seat in mat base</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Straighten and properly set mats into each depression in the rubber base</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Make sure that all the mats have two heights of rubber tees</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Ask customers to empty balls into ball holder and retrieve their baskets and any loose baskets</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Pick up extra balls in trays and give to other patrons or put in hopper</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Put the metal bucket stand and buckets in the garage together — do <strong>not</strong> remove buckets from stand and leave the stand outside overnight</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Put back any supplies that were used during the day</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Clean the top of the bench</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Break down any cardboard boxes and store on shelf</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Remove tokens from both ball dispensers and turn off the machine at the toggle switch — tokens are to be delivered to the pro shop front desk</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Remove the drain hose and hang it on the ball washer</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Park the range picker pointing out towards the back of the range, away from the PT building</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Disconnect the range picker from the cart and back the cart into the building</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Close the garage door and make sure that the entrance door closes and locks</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Lock the bathroom doors</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Pull set of chains across by parking lot</span>
+      </li>
+      <li class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg class="check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="item-label">Pull the gate across the ball machine and lock top lock</span>
+      </li>
+    </ul>
+
+    <!-- Hopper Photo Upload -->
+    <div class="divider" style="margin: 0.5rem 0 1.25rem;"></div>
+    <div class="slabel">Submit picture of hopper</div>
+    <div class="hopper-upload" id="hopper-drop" onclick="document.getElementById('hopper-file').click()">
+      <input type="file" id="hopper-file" accept="image/*" capture="environment" onchange="hopperFileSelected(event)">
+      <div class="hopper-upload-inner" id="hopper-prompt">
+        <div class="hopper-upload-icon" id="hopper-icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="5" width="16" height="12" rx="2" stroke="#888" stroke-width="1.4"/>
+            <circle cx="10" cy="11" r="3" stroke="#888" stroke-width="1.4"/>
+            <path d="M7 5L8.5 2.5H11.5L13 5" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="hopper-upload-label" id="hopper-label-text">Tap to take a photo or upload from library</div>
+        <div class="hopper-upload-sub">JPG, PNG, HEIC · Max 20MB</div>
+      </div>
+      <div id="hopper-preview-wrap" onclick="event.stopPropagation()">
+        <img id="hopper-preview" src="" alt="Hopper photo preview">
+        <button class="hopper-remove" onclick="removeHopperPhoto(event)" title="Remove photo">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <line x1="1" y1="1" x2="9" y2="9" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="9" y1="1" x2="1" y2="9" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span class="plabel">Completion</span>
+        <span class="pcount"><span id="done-count">0</span> / 21 items</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Recipients -->
+    <div class="recipients">
+      <div class="slabel">Report will be sent to</div>
+      <div class="recipient-list">
+        <div class="recipient-row">
+          <div class="recipient-dot"></div>
+          <span class="recipient-name">Lisa Jensen</span>
+          <span class="recipient-email">Lisa.Jensen@rutgers.edu</span>
+        </div>
+        <div class="recipient-row">
+          <div class="recipient-dot"></div>
+          <span class="recipient-name">Anthony Hrabar</span>
+          <span class="recipient-email">Anthony.Hrabar@rutgers.edu</span>
+        </div>
+        <div class="recipient-row">
+          <div class="recipient-dot"></div>
+          <span class="recipient-name">Robert Carita</span>
+          <span class="recipient-email">Robert.carita@rutgers.edu</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="notes-field">
+      <div class="slabel">Additional Notes (optional)</div>
+      <textarea id="notes" placeholder="Any issues, observations, or follow-ups to report tonight…"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-row">
+      <button class="submit-btn" onclick="submitChecklist()">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" style="flex-shrink:0">
+          <path d="M2 10L18 2L14 18L10 12L2 10Z" stroke="white" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+          <line x1="10" y1="12" x2="18" y2="2" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Submit &amp; Send Report
+      </button>
+    </div>
+
+    <div class="alert alert-warn" id="alert-warn"></div>
+    <div class="alert alert-info" id="alert-incomplete">Some items are unchecked — they will appear as incomplete in the report.</div>
+    <div class="alert alert-success" id="alert-success">Your email client has opened with the completed report. Review and click Send in your email application.</div>
+
+  </div>
+
+  <div class="page-footer">Rutgers University Golf Course &nbsp;·&nbsp; Practice &amp; Teaching Area &nbsp;·&nbsp; Nightly Operations</div>
+
+</div>
+
+<script>
+  var TOTAL = 21;
+  var currentShift = '';
+  var hopperImageData = null;
+  var hopperFileName = '';
+
+  // Set today's date
+  (function() {
+    var d = new Date();
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    document.getElementById('check-date').value = y + '-' + m + '-' + day;
+  })();
+
+  function selectShift(val) {
+    currentShift = val;
+    document.getElementById('shift-am').classList.toggle('active', val === 'AM');
+    document.getElementById('shift-pm').classList.toggle('active', val === 'PM');
+  }
+
+  function toggle(el) {
+    el.classList.toggle('done');
+    updateProgress();
+  }
+
+  function clearAll() {
+    document.querySelectorAll('.check-item.done').forEach(function(el) {
+      el.classList.remove('done');
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    var done = document.querySelectorAll('.check-item.done').length;
+    var pct = Math.round((done / TOTAL) * 100);
+    document.getElementById('done-count').textContent = done;
+    document.getElementById('prog-fill').style.width = pct + '%';
+  }
+
+  function hopperFileSelected(event) {
+    var file = event.target.files[0];
+    if (!file) return;
+    hopperFileName = file.name;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      hopperImageData = e.target.result;
+      document.getElementById('hopper-preview').src = hopperImageData;
+      document.getElementById('hopper-preview-wrap').style.display = 'block';
+      document.getElementById('hopper-prompt').style.display = 'none';
+      document.getElementById('hopper-drop').classList.add('has-image');
+      var iconSvg = document.getElementById('hopper-icon');
+      if (iconSvg) {
+        iconSvg.innerHTML = '<svg width="14" height="14" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeHopperPhoto(event) {
+    event.stopPropagation();
+    hopperImageData = null;
+    hopperFileName = '';
+    document.getElementById('hopper-file').value = '';
+    document.getElementById('hopper-preview').src = '';
+    document.getElementById('hopper-preview-wrap').style.display = 'none';
+    document.getElementById('hopper-prompt').style.display = 'flex';
+    document.getElementById('hopper-drop').classList.remove('has-image');
+  }
+
+  function submitChecklist() {
+    var warn = document.getElementById('alert-warn');
+    var incomplete = document.getElementById('alert-incomplete');
+    var success = document.getElementById('alert-success');
+    warn.style.display = 'none';
+    incomplete.style.display = 'none';
+    success.style.display = 'none';
+
+    var name = document.getElementById('staff-name').value.trim();
+    var dateVal = document.getElementById('check-date').value;
+    var notes = document.getElementById('notes').value.trim();
+
+    if (!name) {
+      warn.textContent = 'Please enter your name before submitting.';
+      warn.style.display = 'block';
+      document.getElementById('staff-name').focus();
+      return;
+    }
+    if (!currentShift) {
+      warn.textContent = 'Please select AM or PM shift before submitting.';
+      warn.style.display = 'block';
+      return;
+    }
+
+    var items = document.querySelectorAll('.check-item');
+    var doneCount = document.querySelectorAll('.check-item.done').length;
+    var lines = [];
+    items.forEach(function(li) {
+      var text = li.querySelector('.item-label').textContent.replace(/\s+/g, ' ').trim();
+      var done = li.classList.contains('done');
+      lines.push((done ? '[DONE]  ' : '[----]  ') + text);
+    });
+
+    var fmtDate = dateVal
+      ? new Date(dateVal + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+      : 'Not specified';
+
+    var allDone = doneCount === TOTAL;
+    var subject = 'Nightly Checklist — ' + fmtDate + ' (' + currentShift + ' Shift)';
+
+    var body = '';
+    body += 'RUTGERS UNIVERSITY GOLF COURSE\n';
+    body += 'Practice & Teaching Area — Nightly Checklist Report\n';
+    body += '══════════════════════════════════════════════════\n\n';
+    body += 'Date:         ' + fmtDate + '\n';
+    body += 'Shift:        ' + currentShift + '\n';
+    body += 'Submitted by: ' + name + '\n';
+    body += 'Completion:   ' + doneCount + ' of ' + TOTAL + ' items (' + Math.round((doneCount / TOTAL) * 100) + '%)\n';
+    body += 'Hopper photo: ' + (hopperImageData ? 'Attached — ' + hopperFileName : 'Not submitted') + '\n\n';
+    body += '──────────────────────────────────────────────────\n\n';
+    body += lines.join('\n') + '\n\n';
+    body += '──────────────────────────────────────────────────\n\n';
+
+    if (notes) {
+      body += 'ADDITIONAL NOTES:\n' + notes + '\n\n';
+      body += '──────────────────────────────────────────────────\n\n';
+    }
+
+    if (allDone) {
+      body += 'SIGN-OFF: All ' + TOTAL + ' checklist items completed. — ' + name;
+    } else {
+      body += 'NOTE: ' + (TOTAL - doneCount) + ' item(s) were NOT completed this shift. — ' + name;
+    }
+
+    var toList = 'Lisa.Jensen@rutgers.edu,Anthony.Hrabar@rutgers.edu,Robert.carita@rutgers.edu';
+    var mailto = 'mailto:' + toList
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(body);
+
+    // If hopper photo present, open it in a new tab for manual attachment
+    if (hopperImageData) {
+      var photoWin = window.open('', '_blank');
+      if (photoWin) {
+        photoWin.document.write(
+          '<!DOCTYPE html><html><head><title>Hopper Photo — ' + hopperFileName + '</title></head>' +
+          '<body style="margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;">' +
+          '<p style="color:#aaa;font-size:13px;margin-bottom:12px;">Save or drag this image into your email as an attachment.</p>' +
+          '<img src="' + hopperImageData + '" style="max-width:90vw;max-height:80vh;border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,0.5);">' +
+          '<a href="' + hopperImageData + '" download="' + hopperFileName + '" style="margin-top:16px;padding:10px 22px;background:#CC0033;color:white;border-radius:6px;text-decoration:none;font-size:14px;font-weight:600;">Download Photo</a>' +
+          '</body></html>'
+        );
+        photoWin.document.close();
+      }
+    }
+
+    window.location.href = mailto;
+
+    if (doneCount < TOTAL) {
+      incomplete.style.display = 'block';
+    }
+
+    var successMsg = 'Your email client has opened with the completed report.';
+    if (hopperImageData) {
+      successMsg += ' A new tab opened with the hopper photo — download and attach it to the email before sending.';
+    }
+    document.getElementById('alert-success').textContent = successMsg;
+    success.style.display = 'block';
+  }
+</script>
+</body>
+</html>
