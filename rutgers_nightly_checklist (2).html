@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice &amp; Teaching Area — Nightly Checklist | Rutgers Golf Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --scarlet: #CC0033;
+  --scarlet-dark: #99001F;
+  --scarlet-mid: #E8003A;
+  --scarlet-tint: #F9EBF0;
+  --scarlet-border: #F0C0CC;
+  --gray-900: #1A1A1A;
+  --gray-700: #3D3D3D;
+  --gray-500: #6B6B6B;
+  --gray-300: #C8C8C8;
+  --gray-100: #F4F4F2;
+  --white: #FFFFFF;
+  --success-bg: #F0F7EA;
+  --success-border: #B8DCA0;
+  --success-text: #3A6B1F;
+  --warn-bg: #FFF8E6;
+  --warn-border: #FFD97A;
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #EDEBE6;
+  min-height: 100vh;
+  color: var(--gray-700);
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,0,0,0.03) 39px, rgba(0,0,0,0.03) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,0,0,0.03) 39px, rgba(0,0,0,0.03) 40px);
+}
+
+.page { max-width: 700px; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+
+/* ── Header ── */
+.card-header { background: var(--scarlet); border-radius: 14px 14px 0 0; overflow: hidden; }
+.header-stripe {
+  height: 5px;
+  background: repeating-linear-gradient(90deg, #000 0px, #000 20px, var(--scarlet-dark) 20px, var(--scarlet-dark) 22px);
+  opacity: 0.18;
+}
+.header-inner { padding: 1.5rem 1.75rem 1.75rem; display: flex; align-items: flex-start; gap: 1.1rem; }
+.ru-seal {
+  width: 54px; height: 54px; background: white; border-radius: 50%;
+  flex-shrink: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; margin-top: 2px;
+}
+.ru-seal-r { font-family: 'Source Serif 4', serif; font-size: 22px; font-weight: 600; color: var(--scarlet); line-height: 1; }
+.ru-seal-u { font-size: 7.5px; font-weight: 600; color: var(--scarlet); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px; }
+.header-text h1 { font-family: 'Source Serif 4', serif; font-size: 1.3rem; font-weight: 600; color: white; line-height: 1.3; }
+.header-text .subtitle { font-size: 0.78rem; color: rgba(255,255,255,0.72); margin-top: 4px; letter-spacing: 0.3px; }
+
+/* ── Body card ── */
+.card-body {
+  background: var(--white); border: 1px solid #DDD; border-top: none;
+  border-radius: 0 0 14px 14px; padding: 1.75rem;
+  animation: fadeUp 0.35s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Section label ── */
+.slabel {
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 1.1px;
+  text-transform: uppercase; color: var(--gray-500); margin-bottom: 8px; display: block;
+}
+
+/* ── Meta row ── */
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.25rem; }
+@media (max-width: 480px) { .meta-grid { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field input, .field select {
+  height: 38px; border: 1px solid var(--gray-300); border-radius: 7px; padding: 0 11px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem; color: var(--gray-900);
+  background: var(--gray-100); transition: border-color 0.15s, background 0.15s;
+  appearance: none; -webkit-appearance: none;
+}
+.field input:focus, .field select:focus {
+  outline: none; border-color: var(--scarlet); background: white;
+  box-shadow: 0 0 0 3px rgba(204,0,51,0.1);
+}
+
+/* ── Shift buttons ── */
+.shift-group { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+.shift-btn {
+  flex: 1; height: 38px; border: 1px solid var(--gray-300); border-radius: 7px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 500;
+  cursor: pointer; background: var(--gray-100); color: var(--gray-500); transition: all 0.15s;
+}
+.shift-btn:hover { border-color: var(--scarlet); color: var(--scarlet); background: var(--scarlet-tint); }
+.shift-btn.active { background: var(--scarlet); border-color: var(--scarlet); color: white; box-shadow: 0 2px 8px rgba(204,0,51,0.25); }
+
+/* ── Section header row ── */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.clear-btn {
+  font-size: 0.72rem; color: var(--gray-500); background: none; border: none;
+  cursor: pointer; padding: 2px 6px; border-radius: 4px;
+  font-family: inherit; transition: color 0.15s, background 0.15s;
+}
+.clear-btn:hover { background: var(--gray-100); color: var(--gray-700); }
+
+/* ── NATIVE CHECKBOX + LABEL CHECKLIST ──
+   The real <input> is visually hidden but stays in the DOM and accessible.
+   ALL interaction goes through the <label> which is a native clickable element
+   — works in SharePoint, iframes, and strict CSP environments.
+─────────────────────────────────────────── */
+.checklist { list-style: none; margin-bottom: 1.25rem; }
+.checklist li { margin-bottom: 3px; position: relative; }
+
+/* Hide the native checkbox visually but keep it keyboard/screen-reader accessible */
+.checklist input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px; height: 1px;
+  top: 14px; left: 14px;
+  pointer-events: none;
+}
+
+/* The label IS the interactive row */
+.checklist label {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  -webkit-tap-highlight-color: rgba(204,0,51,0.08);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.checklist label:hover { background: #FEF4F7; border-color: var(--scarlet-border); }
+
+/* Custom visual checkbox inside the label */
+.cb-box {
+  width: 21px; height: 21px; border-radius: 5px;
+  border: 1.5px solid var(--gray-300);
+  flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; background: white;
+}
+.cb-box svg { opacity: 0; transition: opacity 0.15s; display: block; }
+
+/* Checked state — driven by CSS :checked on the sibling input */
+.checklist input[type="checkbox"]:checked + label { background: var(--success-bg); border-color: var(--success-border); }
+.checklist input[type="checkbox"]:checked + label:hover { background: #E8F4E0; }
+.checklist input[type="checkbox"]:checked + label .cb-box { background: var(--scarlet); border-color: var(--scarlet); }
+.checklist input[type="checkbox"]:checked + label .cb-box svg { opacity: 1; }
+.checklist input[type="checkbox"]:checked + label .item-label { color: var(--success-text); text-decoration: line-through; text-decoration-color: #A0C080; }
+
+/* Keyboard focus ring */
+.checklist input[type="checkbox"]:focus + label .cb-box { box-shadow: 0 0 0 3px rgba(204,0,51,0.22); }
+
+.item-label { font-size: 0.875rem; line-height: 1.55; color: var(--gray-700); transition: color 0.15s; }
+
+/* ── Hopper photo upload ── */
+.hopper-section { margin-bottom: 1.5rem; }
+.hopper-upload {
+  border: 1.5px dashed var(--gray-300); border-radius: 10px; padding: 1.1rem;
+  transition: border-color 0.15s, background 0.15s; background: var(--gray-100); cursor: pointer;
+}
+.hopper-upload.has-image { border-color: var(--scarlet); background: var(--scarlet-tint); }
+.hopper-upload-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.hopper-upload-icon {
+  width: 40px; height: 40px; border-radius: 50%; background: white;
+  border: 1px solid var(--gray-300); display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.hopper-upload.has-image .hopper-upload-icon { background: var(--scarlet); border-color: var(--scarlet); }
+.hopper-upload-label-text { font-size: 0.82rem; font-weight: 500; color: var(--gray-700); text-align: center; }
+.hopper-upload-sub { font-size: 0.72rem; color: var(--gray-500); text-align: center; }
+#hopper-file { display: none; }
+#hopper-preview-wrap { display: none; margin-top: 10px; position: relative; }
+#hopper-preview { width: 100%; max-height: 220px; object-fit: cover; border-radius: 7px; border: 1px solid var(--scarlet-border); display: block; }
+.hopper-remove {
+  position: absolute; top: 6px; right: 6px; width: 26px; height: 26px;
+  border-radius: 50%; background: rgba(0,0,0,0.55); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: background 0.15s;
+}
+.hopper-remove:hover { background: rgba(204,0,51,0.85); }
+
+/* ── Progress ── */
+.progress-wrap { margin: 1.25rem 0; padding: 1rem 1.1rem; background: var(--gray-100); border-radius: 9px; border: 1px solid #E6E4DF; }
+.progress-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.progress-meta .plabel { font-size: 0.78rem; color: var(--gray-500); }
+.progress-meta .pcount { font-size: 1.1rem; font-weight: 600; color: var(--gray-900); font-variant-numeric: tabular-nums; }
+.progress-meta .pcount span { color: var(--scarlet); }
+.progress-bar { height: 7px; background: #DDD; border-radius: 4px; overflow: hidden; }
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--scarlet), var(--scarlet-mid));
+  border-radius: 4px; width: 0%; transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── Divider ── */
+.divider { height: 1px; background: #EBEBEB; margin: 1.5rem 0; }
+
+/* ── Recipients ── */
+.recipient-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.recipient-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--gray-100); border-radius: 7px; border: 1px solid #E0DED9; }
+.recipient-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--scarlet); flex-shrink: 0; }
+.recipient-name { font-size: 0.8rem; font-weight: 500; color: var(--gray-700); }
+.recipient-email { font-size: 0.78rem; color: var(--gray-500); margin-left: auto; }
+@media (max-width: 480px) { .recipient-email { display: none; } }
+
+/* ── Notes ── */
+.notes-field { margin-bottom: 1.25rem; }
+.notes-field textarea {
+  width: 100%; min-height: 72px; border: 1px solid var(--gray-300); border-radius: 7px;
+  padding: 9px 11px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+  color: var(--gray-900); background: var(--gray-100); resize: vertical;
+  transition: border-color 0.15s, background 0.15s; line-height: 1.5;
+}
+.notes-field textarea:focus { outline: none; border-color: var(--scarlet); background: white; box-shadow: 0 0 0 3px rgba(204,0,51,0.1); }
+
+/* ── Submit ── */
+.submit-row { display: flex; gap: 10px; align-items: center; }
+.submit-btn {
+  flex: 1; height: 44px; background: var(--scarlet); color: white; border: none;
+  border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; letter-spacing: 0.2px;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.submit-btn:hover { background: var(--scarlet-dark); box-shadow: 0 4px 14px rgba(204,0,51,0.3); }
+.submit-btn:active { transform: scale(0.985); }
+
+/* ── Alerts ── */
+.alert { border-radius: 7px; padding: 9px 12px; font-size: 0.82rem; margin-top: 10px; display: none; line-height: 1.5; }
+.alert-warn    { background: var(--warn-bg);    border: 1px solid var(--warn-border);    color: #7A5B00; }
+.alert-info    { background: #EDF4FF;            border: 1px solid #B3D0F5;               color: #1A4E8A; }
+.alert-success { background: var(--success-bg); border: 1px solid var(--success-border); color: var(--success-text); }
+
+/* ── Footer ── */
+.page-footer { text-align: center; margin-top: 1.5rem; font-size: 0.72rem; color: #999; letter-spacing: 0.3px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="card-header">
+    <div class="header-stripe"></div>
+    <div class="header-inner">
+      <div class="ru-seal">
+        <div class="ru-seal-r">R</div>
+        <div class="ru-seal-u">Rutgers</div>
+      </div>
+      <div class="header-text">
+        <h1>Practice &amp; Teaching Area<br>Nightly Checklist</h1>
+        <div class="subtitle">Rutgers University Golf Course &nbsp;&middot;&nbsp; Piscataway, NJ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="card-body">
+
+    <!-- Meta -->
+    <div class="meta-grid">
+      <div class="field">
+        <label class="slabel" for="check-date">Date</label>
+        <input type="date" id="check-date">
+      </div>
+      <div class="field">
+        <label class="slabel" for="staff-name">Staff Name</label>
+        <input type="text" id="staff-name" placeholder="Enter your name">
+      </div>
+    </div>
+
+    <!-- Shift -->
+    <span class="slabel" id="shift-label">Shift</span>
+    <div class="shift-group" role="group" aria-labelledby="shift-label">
+      <button class="shift-btn" id="shift-am" type="button">AM Shift</button>
+      <button class="shift-btn" id="shift-pm" type="button">PM Shift</button>
+    </div>
+
+    <!-- Checklist -->
+    <div class="section-header">
+      <span class="slabel" style="margin:0">Checklist Items</span>
+      <button class="clear-btn" id="clear-all-btn" type="button">Clear all</button>
+    </div>
+
+    <ul class="checklist" id="checklist">
+      <li><input type="checkbox" id="c1"><label for="c1"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Bring in any teaching equipment that may have been left out in the teaching area</span></label></li>
+      <li><input type="checkbox" id="c2"><label for="c2"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Sweep the floor in the PT building and mop floor underneath the ball tray and cleaner. Pick up any deer scat with a dustbroom and throw in the woods &mdash; do <strong>not</strong> throw out on the rocks by the pump at the back door</span></label></li>
+      <li><input type="checkbox" id="c3"><label for="c3"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Empty all garbage cans (inside building, behind stalls, and inside Golf Team area)</span></label></li>
+      <li><input type="checkbox" id="c4"><label for="c4"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Check the condition of the mats and rotate them 1/4 turn in the rubber mat if it shows heavy wear</span></label></li>
+      <li><input type="checkbox" id="c5"><label for="c5"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Check the condition of the hitting panels and replace as needed; also seat in mat base</span></label></li>
+      <li><input type="checkbox" id="c6"><label for="c6"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Straighten and properly set mats into each depression in the rubber base</span></label></li>
+      <li><input type="checkbox" id="c7"><label for="c7"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Make sure that all the mats have two heights of rubber tees</span></label></li>
+      <li><input type="checkbox" id="c8"><label for="c8"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Ask customers to empty balls into ball holder and retrieve their baskets and any loose baskets</span></label></li>
+      <li><input type="checkbox" id="c9"><label for="c9"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Pick up extra balls in trays and give to other patrons or put in hopper</span></label></li>
+      <li><input type="checkbox" id="c10"><label for="c10"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Put the metal bucket stand and buckets in the garage together &mdash; do <strong>not</strong> remove buckets from stand and leave the stand outside overnight</span></label></li>
+      <li><input type="checkbox" id="c11"><label for="c11"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Put back any supplies that were used during the day</span></label></li>
+      <li><input type="checkbox" id="c12"><label for="c12"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Clean the top of the bench</span></label></li>
+      <li><input type="checkbox" id="c13"><label for="c13"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Break down any cardboard boxes and store on shelf</span></label></li>
+      <li><input type="checkbox" id="c14"><label for="c14"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Remove tokens from both ball dispensers and turn off the machine at the toggle switch &mdash; tokens are to be delivered to the pro shop front desk</span></label></li>
+      <li><input type="checkbox" id="c15"><label for="c15"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Remove the drain hose and hang it on the ball washer</span></label></li>
+      <li><input type="checkbox" id="c16"><label for="c16"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Park the range picker pointing out towards the back of the range, away from the PT building</span></label></li>
+      <li><input type="checkbox" id="c17"><label for="c17"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Disconnect the range picker from the cart and back the cart into the building</span></label></li>
+      <li><input type="checkbox" id="c18"><label for="c18"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Close the garage door and make sure that the entrance door closes and locks</span></label></li>
+      <li><input type="checkbox" id="c19"><label for="c19"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Lock the bathroom doors</span></label></li>
+      <li><input type="checkbox" id="c20"><label for="c20"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Pull set of chains across by parking lot</span></label></li>
+      <li><input type="checkbox" id="c21"><label for="c21"><span class="cb-box"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="item-label">Pull the gate across the ball machine and lock top lock</span></label></li>
+    </ul>
+
+    <!-- Hopper Photo Upload -->
+    <div class="divider" style="margin:0.25rem 0 1.25rem;"></div>
+    <div class="hopper-section">
+      <label class="slabel" for="hopper-file">Submit picture of hopper</label>
+      <div class="hopper-upload" id="hopper-drop" tabindex="0" role="button" aria-label="Upload hopper photo">
+        <input type="file" id="hopper-file" accept="image/*" capture="environment">
+        <div class="hopper-upload-inner" id="hopper-prompt">
+          <div class="hopper-upload-icon" id="hopper-icon">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="5" width="16" height="12" rx="2" stroke="#888" stroke-width="1.4"/>
+              <circle cx="10" cy="11" r="3" stroke="#888" stroke-width="1.4"/>
+              <path d="M7 5L8.5 2.5H11.5L13 5" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="hopper-upload-label-text">Tap to take a photo or upload from library</div>
+          <div class="hopper-upload-sub">JPG, PNG, HEIC &nbsp;&middot;&nbsp; Max 20MB</div>
+        </div>
+        <div id="hopper-preview-wrap">
+          <img id="hopper-preview" src="" alt="Hopper photo preview">
+          <button class="hopper-remove" id="hopper-remove-btn" type="button" title="Remove photo">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <line x1="1" y1="1" x2="9" y2="9" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+              <line x1="9" y1="1" x2="1" y2="9" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span class="plabel">Completion</span>
+        <span class="pcount"><span id="done-count">0</span> / 21 items</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Recipients -->
+    <div class="recipients">
+      <div class="slabel">Report will be sent to</div>
+      <div class="recipient-list">
+        <div class="recipient-row"><div class="recipient-dot"></div><span class="recipient-name">Lisa Jensen</span><span class="recipient-email">Lisa.Jensen@rutgers.edu</span></div>
+        <div class="recipient-row"><div class="recipient-dot"></div><span class="recipient-name">Anthony Hrabar</span><span class="recipient-email">Anthony.Hrabar@rutgers.edu</span></div>
+        <div class="recipient-row"><div class="recipient-dot"></div><span class="recipient-name">Robert Carita</span><span class="recipient-email">Robert.carita@rutgers.edu</span></div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="notes-field" style="margin-top:1.25rem;">
+      <label class="slabel" for="notes">Additional Notes (optional)</label>
+      <textarea id="notes" placeholder="Any issues, observations, or follow-ups to report tonight&#8230;"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-row">
+      <button class="submit-btn" id="submit-btn" type="button">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" style="flex-shrink:0">
+          <path d="M2 10L18 2L14 18L10 12L2 10Z" stroke="white" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+          <line x1="10" y1="12" x2="18" y2="2" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Submit &amp; Send Report
+      </button>
+    </div>
+
+    <!-- Hidden mailto anchor — mobile browsers trust a real <a> tap far more than window.location.href -->
+    <a id="mailto-link" href="#" style="display:none;" aria-hidden="true">Send</a>
+
+    <div class="alert alert-warn"    id="alert-warn"></div>
+    <div class="alert alert-info"    id="alert-incomplete">Some items are unchecked &mdash; they will appear as incomplete in the report.</div>
+    <div class="alert alert-success" id="alert-success"></div>
+
+  </div>
+
+  <div class="page-footer">Rutgers University Golf Course &nbsp;&middot;&nbsp; Practice &amp; Teaching Area &nbsp;&middot;&nbsp; Nightly Operations</div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var TOTAL = 21;
+  var currentShift = '';
+  var hopperImageData = null;
+  var hopperFileName = '';
+
+  /* ── Set today's date ── */
+  var dateInput = document.getElementById('check-date');
+  var now = new Date();
+  dateInput.value =
+    now.getFullYear() + '-' +
+    String(now.getMonth() + 1).padStart(2, '0') + '-' +
+    String(now.getDate()).padStart(2, '0');
+
+  /* ── Shift buttons — addEventListener, no onclick ── */
+  document.getElementById('shift-am').addEventListener('click', function () { setShift('AM'); });
+  document.getElementById('shift-pm').addEventListener('click', function () { setShift('PM'); });
+
+  function setShift(val) {
+    currentShift = val;
+    document.getElementById('shift-am').classList.toggle('active', val === 'AM');
+    document.getElementById('shift-pm').classList.toggle('active', val === 'PM');
+  }
+
+  /* ── Checklist progress — listen to each checkbox change ── */
+  var checkboxes = document.querySelectorAll('#checklist input[type="checkbox"]');
+
+  checkboxes.forEach(function (cb) {
+    cb.addEventListener('change', updateProgress);
+  });
+
+  function updateProgress() {
+    var done = 0;
+    checkboxes.forEach(function (cb) { if (cb.checked) done++; });
+    document.getElementById('done-count').textContent = done;
+    document.getElementById('prog-fill').style.width = Math.round((done / TOTAL) * 100) + '%';
+  }
+
+  /* ── Clear all ── */
+  document.getElementById('clear-all-btn').addEventListener('click', function () {
+    checkboxes.forEach(function (cb) { cb.checked = false; });
+    updateProgress();
+  });
+
+  /* ── Hopper photo ── */
+  var hopperDrop       = document.getElementById('hopper-drop');
+  var hopperFile       = document.getElementById('hopper-file');
+  var hopperPrompt     = document.getElementById('hopper-prompt');
+  var hopperPreviewWrap = document.getElementById('hopper-preview-wrap');
+  var hopperPreview    = document.getElementById('hopper-preview');
+  var hopperRemoveBtn  = document.getElementById('hopper-remove-btn');
+  var hopperIcon       = document.getElementById('hopper-icon');
+
+  hopperDrop.addEventListener('click', function (e) {
+    if (e.target === hopperRemoveBtn || hopperRemoveBtn.contains(e.target)) return;
+    hopperFile.click();
+  });
+
+  hopperDrop.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hopperFile.click(); }
+  });
+
+  hopperFile.addEventListener('change', function (e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    hopperFileName = file.name;
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      hopperImageData = ev.target.result;
+      hopperPreview.src = hopperImageData;
+      hopperPreviewWrap.style.display = 'block';
+      hopperPrompt.style.display = 'none';
+      hopperDrop.classList.add('has-image');
+      hopperIcon.innerHTML =
+        '<svg width="14" height="12" viewBox="0 0 12 10" fill="none">' +
+        '<polyline points="1,5 4.5,8.5 11,1.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '</svg>';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  hopperRemoveBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    hopperImageData = null;
+    hopperFileName = '';
+    hopperFile.value = '';
+    hopperPreview.src = '';
+    hopperPreviewWrap.style.display = 'none';
+    hopperPrompt.style.display = 'flex';
+    hopperDrop.classList.remove('has-image');
+    hopperIcon.innerHTML =
+      '<svg width="18" height="18" viewBox="0 0 20 20" fill="none">' +
+      '<rect x="2" y="5" width="16" height="12" rx="2" stroke="#888" stroke-width="1.4"/>' +
+      '<circle cx="10" cy="11" r="3" stroke="#888" stroke-width="1.4"/>' +
+      '<path d="M7 5L8.5 2.5H11.5L13 5" stroke="#888" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>';
+  });
+
+  /* ── Submit ── */
+  /* Strategy: build the mailto href, assign it to a real hidden <a> tag,
+     then programmatically .click() it. Mobile browsers (iOS Safari, Chrome Android)
+     treat a JS-triggered click on an <a href="mailto:..."> as a trusted user gesture
+     and will open the mail app reliably. window.location.href can be silently
+     blocked on mobile, especially after a window.open() call. We also strip
+     decorative Unicode border characters from the body since some mail apps
+     on mobile choke on high-code-point chars and inflate the URL length. */
+
+  var mailtoLink = document.getElementById('mailto-link');
+
+  document.getElementById('submit-btn').addEventListener('click', function () {
+    var alertWarn       = document.getElementById('alert-warn');
+    var alertIncomplete = document.getElementById('alert-incomplete');
+    var alertSuccess    = document.getElementById('alert-success');
+    alertWarn.style.display       = 'none';
+    alertIncomplete.style.display = 'none';
+    alertSuccess.style.display    = 'none';
+
+    /* ── Validation ── */
+    var name    = document.getElementById('staff-name').value.trim();
+    var dateVal = document.getElementById('check-date').value;
+    var notes   = document.getElementById('notes').value.trim();
+
+    if (!name) {
+      alertWarn.textContent = 'Please enter your name before submitting.';
+      alertWarn.style.display = 'block';
+      document.getElementById('staff-name').focus();
+      return;
+    }
+    if (!currentShift) {
+      alertWarn.textContent = 'Please select AM or PM shift before submitting.';
+      alertWarn.style.display = 'block';
+      return;
+    }
+
+    /* ── Build checklist lines ── */
+    var doneCount = 0;
+    var doneLines = [];
+    var missLines = [];
+
+    checkboxes.forEach(function (cb) {
+      var lbl  = document.querySelector('label[for="' + cb.id + '"]');
+      var text = lbl ? lbl.querySelector('.item-label').textContent.replace(/\s+/g, ' ').trim() : cb.id;
+      if (cb.checked) {
+        doneCount++;
+        doneLines.push('  [x] ' + text);
+      } else {
+        missLines.push('  [ ] ' + text);
+      }
+    });
+
+    /* ── Format date ── */
+    var fmtDate = dateVal
+      ? new Date(dateVal + 'T12:00:00').toLocaleDateString('en-US', {
+          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        })
+      : 'Not specified';
+
+    var pct     = Math.round((doneCount / TOTAL) * 100);
+    var allDone = doneCount === TOTAL;
+    var sep     = '------------------------------------------------';
+
+    /* ── Build compact body (avoids mailto URL length limits on mobile) ── */
+    var subject = 'Nightly Checklist - ' + fmtDate + ' (' + currentShift + ' Shift)';
+
+    var bodyParts = [
+      'RUTGERS UNIVERSITY GOLF COURSE',
+      'Practice & Teaching Area - Nightly Checklist',
+      sep,
+      'Date:         ' + fmtDate,
+      'Shift:        ' + currentShift,
+      'Submitted by: ' + name,
+      'Completion:   ' + doneCount + '/' + TOTAL + ' (' + pct + '%)',
+      'Hopper photo: ' + (hopperImageData ? 'Yes - ' + hopperFileName : 'Not submitted'),
+      sep
+    ];
+
+    if (doneLines.length) {
+      bodyParts.push('COMPLETED:');
+      bodyParts = bodyParts.concat(doneLines);
+    }
+    if (missLines.length) {
+      bodyParts.push('');
+      bodyParts.push('NOT COMPLETED:');
+      bodyParts = bodyParts.concat(missLines);
+    }
+
+    bodyParts.push(sep);
+
+    if (notes) {
+      bodyParts.push('NOTES: ' + notes);
+      bodyParts.push(sep);
+    }
+
+    bodyParts.push(
+      allDone
+        ? 'All ' + TOTAL + ' items completed. - ' + name
+        : (TOTAL - doneCount) + ' item(s) not completed. - ' + name
+    );
+
+    var body = bodyParts.join('\n');
+
+    /* ── Build mailto and fire via real <a> click ── */
+    var toList = 'Lisa.Jensen@rutgers.edu,Anthony.Hrabar@rutgers.edu,Robert.carita@rutgers.edu';
+    var href   = 'mailto:' + toList
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body='    + encodeURIComponent(body);
+
+    mailtoLink.href = href;
+    mailtoLink.click();
+
+    /* ── Show hopper photo download instructions AFTER mailto fires ── */
+    if (hopperImageData) {
+      /* Use a short timeout so the mailto fires first before any DOM updates */
+      setTimeout(function () {
+        showHopperDownload();
+      }, 300);
+    }
+
+    /* ── Status messages ── */
+    if (doneCount < TOTAL) alertIncomplete.style.display = 'block';
+
+    alertSuccess.textContent = hopperImageData
+      ? 'Email app opened! Scroll down for your hopper photo download link — save it and attach it to the email before sending.'
+      : 'Email app opened with your completed report. Review and tap Send.';
+    alertSuccess.style.display = 'block';
+  });
+
+  /* ── Hopper photo download panel (shown after submit) ── */
+  function showHopperDownload() {
+    var existing = document.getElementById('hopper-download-panel');
+    if (existing) { existing.remove(); }
+
+    var panel = document.createElement('div');
+    panel.id = 'hopper-download-panel';
+    panel.style.cssText =
+      'margin-top:12px;padding:14px;background:#FFF3F5;border:1.5px solid #F0C0CC;' +
+      'border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:10px;';
+
+    var msg = document.createElement('p');
+    msg.style.cssText = 'font-size:0.82rem;color:#7A2030;text-align:center;line-height:1.5;';
+    msg.textContent = 'Tap the button below to save your hopper photo, then attach it to the email before sending.';
+
+    var dlLink = document.createElement('a');
+    dlLink.href     = hopperImageData;
+    dlLink.download = hopperFileName || 'hopper-photo.jpg';
+    dlLink.style.cssText =
+      'display:inline-flex;align-items:center;gap:7px;padding:10px 20px;' +
+      'background:#CC0033;color:white;border-radius:7px;text-decoration:none;' +
+      'font-family:inherit;font-size:0.875rem;font-weight:600;';
+    dlLink.innerHTML =
+      '<svg width="14" height="14" viewBox="0 0 16 16" fill="none">' +
+      '<path d="M8 2v8M5 7l3 3 3-3" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M3 13h10" stroke="white" stroke-width="1.6" stroke-linecap="round"/>' +
+      '</svg>Save Hopper Photo';
+
+    panel.appendChild(msg);
+    panel.appendChild(dlLink);
+
+    var successEl = document.getElementById('alert-success');
+    successEl.parentNode.insertBefore(panel, successEl.nextSibling);
+  }
+
+})();
+</script>
+</body>
+</html>
