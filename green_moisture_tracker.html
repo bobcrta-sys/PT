@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>Green Moisture Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --scarlet:#CC0033;--scarlet-d:#a80029;--scarlet-glow:rgba(204,0,51,.2);
+  --green-lite:#52B788;--blue:#5e9bdc;--amber:#f0a500;--red:#e05252;
+  --navy:#0c1420;--navy2:#111c2c;--panel:#162030;--panel2:#1b2840;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --text:#dde4f0;--muted:#7a8fa6;
+  --font-h:'DM Serif Display',serif;--font:'DM Sans',sans-serif;--font-m:'JetBrains Mono',monospace;
+  --r:12px;--r-sm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--navy);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
+
+/* SETUP OVERLAY */
+#setup-overlay{position:fixed;inset:0;background:var(--navy);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
+.setup-box{background:var(--panel);border:1px solid var(--border2);border-radius:16px;padding:32px 28px;max-width:460px;width:100%}
+.setup-logo{font-size:2.8rem;text-align:center;margin-bottom:10px}
+.setup-title{font-family:var(--font-h);font-size:1.5rem;text-align:center;margin-bottom:6px}
+.setup-title span{color:var(--scarlet)}
+.setup-sub{font-size:.82rem;color:var(--muted);margin-bottom:22px;line-height:1.6;text-align:center}
+.setup-hint{font-size:.72rem;color:var(--amber);margin-bottom:18px;line-height:1.6;background:rgba(240,165,0,.07);padding:11px 13px;border-radius:6px;border-left:3px solid var(--amber)}
+.setup-hint a{color:var(--amber);font-weight:600}
+.setup-hint code{font-family:var(--font-m);font-size:.7rem;background:rgba(255,255,255,.09);padding:1px 5px;border-radius:3px}
+.fl{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.fl label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.fi{width:100%;background:var(--panel2);border:1px solid var(--border2);color:var(--text);font-family:var(--font-m);font-size:.82rem;padding:9px 12px;border-radius:var(--r-sm);outline:none;transition:border .2s}
+.fi:focus{border-color:var(--scarlet)}
+.fi::placeholder{color:var(--muted)}
+.btn{font-family:var(--font);font-weight:600;font-size:.83rem;padding:10px 20px;border-radius:var(--r-sm);border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--scarlet);color:#fff}
+.btn-primary:hover{background:var(--scarlet-d);box-shadow:0 4px 18px var(--scarlet-glow)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:rgba(255,255,255,.07);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,.12)}
+.btn-sm{font-size:.76rem;padding:7px 14px}
+.setup-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.divider{height:1px;background:var(--border);margin:18px 0}
+
+/* HEADER */
+header{background:linear-gradient(135deg,#0a1018 0%,#160818 50%,#0a1018 100%);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;box-shadow:0 2px 24px rgba(0,0,0,.5)}
+.hi{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:0 18px;height:56px}
+.logo{width:36px;height:36px;background:var(--scarlet);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 0 14px var(--scarlet-glow)}
+.htxt .htitle{font-family:var(--font-h);font-size:1.05rem}
+.htxt .htitle span{color:var(--scarlet)}
+.htxt .hsub{font-size:.66rem;color:var(--muted)}
+.sync-wrap{margin-left:auto;display:flex;align-items:center;gap:7px}
+#sync-lbl{font-size:.66rem;color:var(--muted)}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--green-lite);box-shadow:0 0 8px var(--green-lite);flex-shrink:0}
+.sync-dot.off{background:var(--amber);box-shadow:0 0 8px var(--amber)}
+.sync-dot.err{background:var(--red);box-shadow:0 0 8px var(--red)}
+.cfg-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:.95rem;padding:4px 8px;border-radius:5px}
+.cfg-btn:hover{color:var(--text)}
+
+/* TABS */
+.tab-bar{background:var(--navy2);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-inner{max-width:1200px;margin:0 auto;display:flex;padding:0 10px}
+.tab{font-size:.76rem;font-weight:500;padding:11px 15px;border:none;background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+.tab.active{color:var(--text);border-bottom-color:var(--scarlet)}
+
+/* MAIN */
+main{max-width:1200px;margin:0 auto;padding:18px 14px 80px}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:18px}
+@media(max-width:580px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:15px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
+.kpi.am::before{background:var(--green-lite)}
+.kpi.pm::before{background:var(--blue)}
+.kpi.loss::before{background:var(--amber)}
+.kpi.days::before{background:var(--scarlet)}
+.kpi-lbl{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:7px}
+.kpi-val{font-family:var(--font-m);font-size:1.7rem;font-weight:600;line-height:1}
+.kpi-val .unit{font-size:.82rem;color:var(--muted)}
+.kpi-sub{font-size:.65rem;color:var(--muted);margin-top:5px}
+
+/* ENTRY */
+.entry-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.field input,.field select{background:var(--panel2);border:1px solid var(--border2);color:var(--text);font-family:var(--font-m);font-size:.82rem;padding:8px 11px;border-radius:var(--r-sm);outline:none;transition:border .2s}
+.field input:focus,.field select:focus{border-color:var(--scarlet)}
+.field select option{background:var(--panel2)}
+.prog-lbl{font-size:.7rem;color:var(--muted);margin-bottom:5px;display:flex;justify-content:space-between}
+.prog-bar{background:rgba(255,255,255,.06);border-radius:20px;height:5px;margin-bottom:16px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--scarlet),var(--amber));border-radius:20px;transition:width .3s}
+
+/* GREENS GRID */
+.gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:7px;margin-bottom:16px}
+@media(max-width:440px){.gg{grid-template-columns:repeat(3,1fr)}}
+.gc-entry{background:var(--panel2);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px;transition:border .2s}
+.gc-entry.has-am{border-color:rgba(82,183,136,.3)}
+.gc-entry.has-both{border-color:rgba(240,165,0,.4)}
+.g-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between}
+.g-ind{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.1)}
+.gc-entry.has-am .g-ind{background:var(--green-lite)}
+.gc-entry.has-both .g-ind{background:var(--amber);box-shadow:0 0 5px var(--amber)}
+.g-row{display:flex;align-items:center;gap:4px;margin-bottom:4px}
+.g-tag{font-size:.58rem;font-weight:700;width:18px;text-align:center;padding:2px;border-radius:3px;flex-shrink:0}
+.tag-am{background:rgba(82,183,136,.18);color:var(--green-lite)}
+.tag-pm{background:rgba(94,155,220,.18);color:var(--blue)}
+.g-inp{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--text);font-family:var(--font-m);font-size:.8rem;padding:5px 5px;border-radius:5px;outline:none;text-align:center;transition:all .2s}
+.g-inp:focus{border-color:var(--scarlet);background:rgba(204,0,51,.06)}
+.g-loss{font-family:var(--font-m);font-size:.65rem;text-align:center;padding:2px 4px;border-radius:4px;margin-top:2px;font-weight:700}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.76rem}
+thead{background:var(--navy2)}
+th{padding:9px 8px;text-align:center;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--border)}
+td{padding:8px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.loss-pill{display:inline-block;padding:2px 7px;border-radius:20px;font-size:.68rem;font-weight:700;font-family:var(--font-m)}
+.del-btn{background:transparent;border:none;color:var(--red);cursor:pointer;opacity:.4;transition:opacity .2s;padding:2px 6px;font-size:.85rem}
+.del-btn:hover{opacity:1}
+
+/* WEEK */
+.week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:11px}
+.wk-card{background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);padding:15px}
+.wk-n{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px}
+.wk-r{font-size:.8rem;font-weight:500;margin-bottom:11px}
+.wk-s{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;text-align:center}
+.wk-v{font-family:var(--font-m);font-size:1rem;font-weight:700}
+.wk-l{font-size:.58rem;color:var(--muted);text-transform:uppercase}
+.mb-row{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:.63rem;color:var(--muted)}
+.mb-bg{flex:1;background:rgba(255,255,255,.07);border-radius:20px;height:4px;overflow:hidden}
+.mb-fill{height:100%;border-radius:20px;transition:width .5s}
+
+/* GREEN COMPARE */
+.cmp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px}
+.cg{background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);padding:13px;text-align:center;transition:transform .15s,border-color .2s}
+.cg:hover{transform:translateY(-2px);border-color:var(--border2)}
+.cg-num{font-family:var(--font-h);font-size:1.15rem;margin-bottom:7px}
+.cg-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin:7px 0}
+.cg-v{font-family:var(--font-m);font-size:.82rem;font-weight:700}
+.cg-l{font-size:.56rem;color:var(--muted);text-transform:uppercase}
+.cg-bar{height:3px;border-radius:20px;background:rgba(255,255,255,.07);overflow:hidden;margin:7px 0}
+.cg-bf{height:100%;border-radius:20px}
+.sb{font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block}
+.s-ok{background:rgba(82,183,136,.15);color:var(--green-lite)}
+.s-wt{background:rgba(240,165,0,.15);color:var(--amber)}
+.s-hi{background:rgba(204,0,51,.15);color:#ff7070}
+.s-nn{background:rgba(255,255,255,.07);color:var(--muted)}
+
+/* CHART */
+.chart-box{background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:18px}
+.chart-ttl{font-size:.75rem;font-weight:600;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.chart-ttl::before{content:'';width:3px;height:11px;background:var(--scarlet);border-radius:2px;flex-shrink:0}
+canvas{max-height:230px}
+
+/* MISC */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.card-title{font-family:var(--font-h);font-size:.98rem;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--scarlet);box-shadow:0 0 8px var(--scarlet);flex-shrink:0}
+.empty{text-align:center;padding:36px 16px;color:var(--muted)}
+.empty .big{font-size:2.4rem;margin-bottom:9px}
+.empty p{font-size:.82rem}
+.export-row{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+.sr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+
+/* TOAST */
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:#1b4332;color:#fff;font-size:.8rem;font-weight:500;padding:9px 20px;border-radius:30px;box-shadow:0 8px 28px rgba(0,0,0,.5);opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.err{background:#5c1a1a}
+
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.1);border-top-color:var(--scarlet);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════
+     FIREBASE SETUP OVERLAY
+═══════════════════════════════ -->
+<div id="setup-overlay">
+  <div class="setup-box">
+    <div class="setup-logo">⛳</div>
+    <div class="setup-title">Rutgers <span>Moisture</span> Tracker</div>
+    <p class="setup-sub">Multi-user · 18 Greens · AM &amp; PM · Real-time sync</p>
+
+    <div class="setup-hint">
+      <strong>One-time Firebase setup:</strong><br>
+      1. Go to <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a><br>
+      2. Create a project → Add a <strong>Web App</strong><br>
+      3. Copy the 4 config values into the fields below<br>
+      4. In Firebase console: enable <strong>Realtime Database</strong>, set rules to <code>".read": true, ".write": true</code><br>
+      5. Each staff member opens this same HTML file and enters the same config once.
+    </div>
+
+    <div class="fl"><label>API Key</label><input class="fi" id="cfg-api" placeholder="AIzaSy..."/></div>
+    <div class="fl"><label>Project ID</label><input class="fi" id="cfg-proj" placeholder="my-golf-course"/></div>
+    <div class="fl"><label>Database URL</label><input class="fi" id="cfg-db" placeholder="https://my-golf-course-default-rtdb.firebaseio.com"/></div>
+    <div class="fl"><label>App ID</label><input class="fi" id="cfg-app" placeholder="1:123456789:web:abc..."/></div>
+
+    <div class="divider"></div>
+    <div class="setup-actions">
+      <button class="btn btn-ghost btn-sm" id="demo-btn" onclick="useDemoMode()">🧪 Demo Mode (local only)</button>
+      <button class="btn btn-primary" id="connect-btn" onclick="connectFirebase()">🔗 Connect Firebase</button>
+    </div>
+    <p style="font-size:.65rem;color:var(--muted);text-align:center;margin-top:12px">Config is saved only on this device.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     MAIN APP
+═══════════════════════════════ -->
+<header>
+  <div class="hi">
+    <div class="logo">⛳</div>
+    <div class="htxt">
+      <div class="htitle">Rutgers <span>Moisture</span> Tracker</div>
+      <div class="hsub" id="h-sub">18 Greens · AM &amp; PM</div>
+    </div>
+    <div class="sync-wrap">
+      <span id="sync-lbl">connecting...</span>
+      <div class="sync-dot off" id="sync-dot"></div>
+      <button class="cfg-btn" onclick="resetCfg()" title="Change Firebase config">⚙️</button>
+    </div>
+  </div>
+</header>
+
+<nav class="tab-bar">
+  <div class="tab-inner">
+    <button class="tab active" onclick="sw('dashboard')" id="tab-dashboard">📊 Dashboard</button>
+    <button class="tab" onclick="sw('entry')" id="tab-entry">✏️ Log Entry</button>
+    <button class="tab" onclick="sw('history')" id="tab-history">📋 History</button>
+    <button class="tab" onclick="sw('weekly')" id="tab-weekly">📅 Weekly</button>
+    <button class="tab" onclick="sw('greens')" id="tab-greens">🌿 Greens</button>
+  </div>
+</nav>
+
+<main>
+  <!-- DASHBOARD -->
+  <div id="pane-dashboard">
+    <div class="kpi-row">
+      <div class="kpi am"><div class="kpi-lbl">Season AM Avg</div><div class="kpi-val" id="k-am">—</div><div class="kpi-sub" id="k-am-s">No data</div></div>
+      <div class="kpi pm"><div class="kpi-lbl">Season PM Avg</div><div class="kpi-val" id="k-pm">—</div><div class="kpi-sub" id="k-pm-s">No data</div></div>
+      <div class="kpi loss"><div class="kpi-lbl">Avg Daily Loss</div><div class="kpi-val" id="k-loss">—</div><div class="kpi-sub" id="k-loss-s">No data</div></div>
+      <div class="kpi days"><div class="kpi-lbl">Days Logged</div><div class="kpi-val" id="k-days">0</div><div class="kpi-sub">This season</div></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-ttl">7-Day Moisture Trend</div>
+      <canvas id="trendChart"></canvas>
+      <div id="trend-empty" class="empty" style="display:none"><div class="big">📈</div><p>Log 2+ days to see the trend.</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Today's Summary</div>
+      <div id="today-panel"></div>
+    </div>
+  </div>
+
+  <!-- ENTRY -->
+  <div id="pane-entry" style="display:none">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Log Moisture Reading</div>
+      <div class="entry-meta">
+        <div class="field"><label>Date</label><input type="date" id="e-date"/></div>
+        <div class="field"><label>Session</label>
+          <select id="e-sess"><option value="am">🌅 AM — Morning</option><option value="pm">🌇 PM — Afternoon</option></select>
+        </div>
+        <div class="field" style="flex:1;min-width:170px"><label>Notes (optional)</label>
+          <input type="text" id="e-notes" placeholder="e.g. Irrigation ran overnight" style="width:100%"/>
+        </div>
+      </div>
+      <div class="prog-lbl"><span id="prog-txt">0 of 18 greens filled</span><span id="prog-pct">0%</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="gg" id="greens-grid"></div>
+      <div class="export-row">
+        <button class="btn btn-ghost btn-sm" onclick="clearForm()">Clear</button>
+        <button class="btn btn-primary" id="save-btn" onclick="saveEntry()">Save Reading</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="pane-history" style="display:none">
+    <div class="card">
+      <div class="sr">
+        <div class="card-title" style="margin:0"><span class="dot"></span>All Readings</div>
+        <button class="btn btn-ghost btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Date</th><th>Day</th><th>Wk</th>
+            <th style="color:var(--green-lite)">AM Avg</th>
+            <th style="color:var(--blue)">PM Avg</th>
+            <th style="color:var(--amber)">Loss</th>
+            <th>G1</th><th>G2</th><th>G3</th><th>G4</th><th>G5</th><th>G6</th>
+            <th>G7</th><th>G8</th><th>G9</th><th>G10</th><th>G11</th><th>G12</th>
+            <th>G13</th><th>G14</th><th>G15</th><th>G16</th><th>G17</th><th>G18</th>
+            <th>Notes</th><th></th>
+          </tr></thead>
+          <tbody id="hist-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEKLY -->
+  <div id="pane-weekly" style="display:none">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Weekly Summary</div>
+      <div class="week-grid" id="week-grid"></div>
+      <div id="week-empty" class="empty"><div class="big">📅</div><p>No data yet.</p></div>
+    </div>
+  </div>
+
+  <!-- GREENS -->
+  <div id="pane-greens" style="display:none">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Green-by-Green Comparison</div>
+      <div class="cmp-grid" id="cmp-grid"></div>
+      <div id="cmp-empty" class="empty"><div class="big">🌿</div><p>Log readings to see per-green stats.</p></div>
+    </div>
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+// ── CONFIG ─────────────────────────────────────────────────────────────────
+const N = 18;
+const CFG_KEY  = 'rut_fb_cfg';
+const DEMO_KEY = 'rut_demo_v2';
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let records   = [];
+let db        = null;
+let demoMode  = false;
+let tChart    = null;
+
+// ── HELPERS ────────────────────────────────────────────────────────────────
+const avg     = a  => a.length ? a.reduce((s,v)=>s+v,0)/a.length : null;
+const fmt     = v  => v===null||v===undefined||isNaN(+v) ? '—' : (+v).toFixed(1);
+const fmtP    = v  => fmt(v)==='—' ? '—' : fmt(v)+'%';
+const dayN    = d  => DAYS[new Date(d+'T12:00:00').getDay()];
+const fmtD    = d  => { const [y,m,dd]=d.split('-'); return `${m}/${dd}/${y}`; };
+const lc      = v  => v===null||isNaN(v)?'#7a8fa6':v<4?'#52B788':v<8?'#f0a500':'#e05252';
+const lb      = v  => v===null||isNaN(v)?'rgba(122,143,166,.12)':v<4?'rgba(82,183,136,.14)':v<8?'rgba(240,165,0,.14)':'rgba(204,0,51,.14)';
+const wkN     = d  => { const dt=new Date(d+'T12:00:00'); dt.setHours(0,0,0,0); dt.setDate(dt.getDate()+3-(dt.getDay()+6)%7); const w1=new Date(dt.getFullYear(),0,4); return 1+Math.round(((dt-w1)/86400000-3+(w1.getDay()+6)%7)/7); };
+const recAvg  = r  => {
+  const am=[],pm=[];
+  for(let i=1;i<=N;i++){const v=r.readings?.[i]; if(v?.am!=null)am.push(v.am); if(v?.pm!=null)pm.push(v.pm);}
+  const a=avg(am),p=avg(pm); return {a,p,loss:a!==null&&p!==null?a-p:null};
+};
+
+// ── TOAST ──────────────────────────────────────────────────────────────────
+function toast(msg,err=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='show'+(err?' err':'');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className='',2600);
+}
+
+// ── SYNC STATUS ────────────────────────────────────────────────────────────
+function setSyncStatus(s){
+  const dot=document.getElementById('sync-dot'), lbl=document.getElementById('sync-lbl');
+  dot.className='sync-dot'+({online:'',offline:' off',error:' err'}[s]||' off');
+  lbl.textContent={online:'Live sync',offline:'Demo mode',error:'Sync error',connecting:'Connecting...'}[s]||s;
+}
+
+// ── FIREBASE CONNECT ───────────────────────────────────────────────────────
+window.connectFirebase = () => {
+  const api=document.getElementById('cfg-api').value.trim();
+  const proj=document.getElementById('cfg-proj').value.trim();
+  const dbU=document.getElementById('cfg-db').value.trim();
+  const app=document.getElementById('cfg-app').value.trim();
+  if(!api||!proj||!dbU||!app){ toast('Fill in all 4 fields.',true); return; }
+  const cfg={apiKey:api,projectId:proj,databaseURL:dbU,appId:app};
+  localStorage.setItem(CFG_KEY,JSON.stringify(cfg));
+  bootApp(cfg);
+};
+
+window.useDemoMode = () => {
+  demoMode=true;
+  records=JSON.parse(localStorage.getItem(DEMO_KEY)||'[]');
+  document.getElementById('setup-overlay').style.display='none';
+  document.getElementById('h-sub').textContent='18 Greens · Demo Mode';
+  setSyncStatus('offline');
+  buildGrid(); renderDash();
+};
+
+window.resetCfg = () => {
+  if(confirm('Reset Firebase config and reload?')){ localStorage.removeItem(CFG_KEY); location.reload(); }
+};
+
+function bootApp(cfg){
+  try{
+    const app=initializeApp(cfg);
+    db=getDatabase(app);
+    document.getElementById('setup-overlay').style.display='none';
+    setSyncStatus('connecting');
+    onValue(ref(db,'readings'), snap=>{
+      records=[];
+      snap.forEach(ch=>records.push({id:ch.key,...ch.val()}));
+      records.sort((a,b)=>a.date.localeCompare(b.date));
+      setSyncStatus('online');
+      renderAll();
+    }, e=>{ setSyncStatus('error'); toast('Firebase: '+e.message,true); });
+    buildGrid(); renderDash();
+  } catch(e){ toast('Init failed: '+e.message,true); setSyncStatus('error'); }
+}
+
+// Auto-connect from saved config
+const saved=localStorage.getItem(CFG_KEY);
+if(saved){ try{ bootApp(JSON.parse(saved)); } catch(e){} }
+
+// ── BUILD ENTRY GRID ───────────────────────────────────────────────────────
+function buildGrid(){
+  const g=document.getElementById('greens-grid');
+  g.innerHTML='';
+  for(let i=1;i<=N;i++){
+    g.innerHTML+=`<div class="gc-entry" id="gce-${i}">
+      <div class="g-lbl">G${i} <span class="g-ind" id="gi-${i}"></span></div>
+      <div class="g-row"><span class="g-tag tag-am">AM</span><input class="g-inp" id="am-${i}" type="number" min="0" max="100" step="0.1" placeholder="%" inputmode="decimal" oninput="updGreen(${i})"/></div>
+      <div class="g-row"><span class="g-tag tag-pm">PM</span><input class="g-inp" id="pm-${i}" type="number" min="0" max="100" step="0.1" placeholder="%" inputmode="decimal" oninput="updGreen(${i})"/></div>
+      <div class="g-loss" id="gl-${i}" style="color:var(--muted)">Δ —</div>
+    </div>`;
+  }
+  document.getElementById('e-date').value=new Date().toISOString().slice(0,10);
+  updProg();
+}
+
+window.updGreen = i => {
+  const am=parseFloat(document.getElementById('am-'+i).value);
+  const pm=parseFloat(document.getElementById('pm-'+i).value);
+  const dl=document.getElementById('gl-'+i), gc=document.getElementById('gce-'+i);
+  const hA=!isNaN(am), hP=!isNaN(pm);
+  gc.className='gc-entry'+(hA&&hP?' has-both':hA?' has-am':'');
+  if(hA&&hP){
+    const l=am-pm;
+    dl.textContent=`Δ ${l>=0?'+':''}${l.toFixed(1)}%`;
+    dl.style.color=lc(l); dl.style.background=lb(l); dl.style.padding='2px 4px';
+  } else { dl.textContent='Δ —'; dl.style.color='var(--muted)'; dl.style.background='transparent'; }
+  updProg();
+};
+
+function updProg(){
+  let n=0;
+  for(let i=1;i<=N;i++){if(document.getElementById('am-'+i)?.value||document.getElementById('pm-'+i)?.value)n++;}
+  const p=Math.round(n/N*100);
+  document.getElementById('prog-fill').style.width=p+'%';
+  document.getElementById('prog-txt').textContent=`${n} of ${N} greens filled`;
+  document.getElementById('prog-pct').textContent=p+'%';
+}
+
+window.clearForm = () => {
+  for(let i=1;i<=N;i++){document.getElementById('am-'+i).value=''; document.getElementById('pm-'+i).value=''; updGreen(i);}
+  document.getElementById('e-notes').value='';
+};
+
+// ── SAVE ENTRY ─────────────────────────────────────────────────────────────
+window.saveEntry = async () => {
+  const date=document.getElementById('e-date').value;
+  const notes=document.getElementById('e-notes').value.trim();
+  if(!date){ toast('Select a date.',true); return; }
+  const readings={};
+  let any=false;
+  for(let i=1;i<=N;i++){
+    const am=parseFloat(document.getElementById('am-'+i).value);
+    const pm=parseFloat(document.getElementById('pm-'+i).value);
+    readings[i]={am:isNaN(am)?null:am, pm:isNaN(pm)?null:pm};
+    if(!isNaN(am)||!isNaN(pm)) any=true;
+  }
+  if(!any){ toast('Enter at least one reading.',true); return; }
+  const rec={date,week:wkN(date),notes,readings,ts:Date.now()};
+  const btn=document.getElementById('save-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Saving...';
+  try{
+    if(demoMode){
+      const ix=records.findIndex(r=>r.date===date);
+      if(ix>=0){
+        for(let i=1;i<=N;i++){
+          if(readings[i].am!==null) records[ix].readings[i].am=readings[i].am;
+          if(readings[i].pm!==null) records[ix].readings[i].pm=readings[i].pm;
+        }
+        records[ix].notes=notes||records[ix].notes;
+      } else { records.push({id:'d'+Date.now(),...rec}); records.sort((a,b)=>a.date.localeCompare(b.date)); }
+      localStorage.setItem(DEMO_KEY,JSON.stringify(records));
+      renderAll();
+    } else {
+      const ex=records.find(r=>r.date===date);
+      if(ex){
+        const m={...ex};
+        for(let i=1;i<=N;i++){
+          if(readings[i].am!==null) m.readings[i].am=readings[i].am;
+          if(readings[i].pm!==null) m.readings[i].pm=readings[i].pm;
+        }
+        m.notes=notes||m.notes; m.ts=Date.now();
+        const {id,...rest}=m;
+        await set(ref(db,'readings/'+id),rest);
+      } else { await push(ref(db,'readings'),rec); }
+    }
+    toast('Reading saved ✓'); clearForm();
+  } catch(e){ toast('Save failed: '+e.message,true); }
+  finally{ btn.disabled=false; btn.textContent='Save Reading'; }
+};
+
+// ── DELETE ─────────────────────────────────────────────────────────────────
+window.deleteRecord = async id => {
+  if(!confirm('Delete this record?')) return;
+  if(demoMode){
+    records=records.filter(r=>r.id!==id);
+    localStorage.setItem(DEMO_KEY,JSON.stringify(records));
+    renderAll();
+  } else { await remove(ref(db,'readings/'+id)); }
+  toast('Deleted.');
+};
+
+// ── RENDER ALL ─────────────────────────────────────────────────────────────
+function renderAll(){
+  const a=document.querySelector('.tab.active')?.id?.replace('tab-','');
+  renderDash();
+  if(a==='history') renderHistory();
+  if(a==='weekly')  renderWeekly();
+  if(a==='greens')  renderGreens();
+}
+
+// ── TAB SWITCH ─────────────────────────────────────────────────────────────
+window.sw = name => {
+  ['dashboard','entry','history','weekly','greens'].forEach(t=>{
+    document.getElementById('pane-'+t).style.display=t===name?'':'none';
+    document.getElementById('tab-'+t).classList.toggle('active',t===name);
+  });
+  if(name==='history') renderHistory();
+  if(name==='weekly')  renderWeekly();
+  if(name==='greens')  renderGreens();
+  if(name==='dashboard') renderDash();
+};
+
+// ── DASHBOARD ──────────────────────────────────────────────────────────────
+function renderDash(){
+  const allA=[],allP=[],allL=[];
+  records.forEach(r=>{ const {a,p,loss}=recAvg(r); if(a!=null)allA.push(a); if(p!=null)allP.push(p); if(loss!=null)allL.push(loss); });
+  const A=avg(allA),P=avg(allP),L=avg(allL);
+  document.getElementById('k-am').innerHTML  = A==null?'—':`${fmt(A)}<span class="unit">%</span>`;
+  document.getElementById('k-pm').innerHTML  = P==null?'—':`${fmt(P)}<span class="unit">%</span>`;
+  document.getElementById('k-loss').innerHTML= L==null?'—':`${fmt(L)}<span class="unit">%</span>`;
+  document.getElementById('k-days').textContent=records.length;
+  document.getElementById('k-am-s').textContent  = A==null?'No data':'Season average';
+  document.getElementById('k-pm-s').textContent  = P==null?'No data':'Season average';
+  document.getElementById('k-loss-s').textContent= L==null?'No data':L>8?'⚠ High — irrigate?':L>4?'Monitor closely':'✓ Normal range';
+
+  const today=new Date().toISOString().slice(0,10);
+  const tr=records.find(r=>r.date===today);
+  const tp=document.getElementById('today-panel');
+  if(!tr){
+    tp.innerHTML=`<div class="empty"><div class="big">☀️</div><p>No reading for today yet.<br><button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="sw('entry')">Log Now</button></p></div>`;
+  } else {
+    const {a,p,loss}=recAvg(tr);
+    tp.innerHTML=`<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:center">
+      <div><div style="font-size:.65rem;color:var(--muted);margin-bottom:3px">AM AVG</div><div style="font-family:var(--font-m);font-size:1.7rem;color:var(--green-lite)">${fmtP(a)}</div></div>
+      <div><div style="font-size:.65rem;color:var(--muted);margin-bottom:3px">PM AVG</div><div style="font-family:var(--font-m);font-size:1.7rem;color:var(--blue)">${fmtP(p)}</div></div>
+      <div><div style="font-size:.65rem;color:var(--muted);margin-bottom:3px">DAILY LOSS</div><div style="font-family:var(--font-m);font-size:1.7rem;color:${lc(loss)}">${fmtP(loss)}</div></div>
+      ${tr.notes?`<div style="font-size:.78rem;color:var(--muted);font-style:italic">📝 ${tr.notes}</div>`:''}
+    </div>`;
+  }
+
+  // Trend
+  const l7=records.slice(-7);
+  const labels=l7.map(r=>`${dayN(r.date).slice(0,3)} ${r.date.slice(5)}`);
+  const aD=l7.map(r=>recAvg(r).a), pD=l7.map(r=>recAvg(r).p), lD=l7.map(r=>recAvg(r).loss);
+  document.getElementById('trend-empty').style.display=l7.length<1?'':'none';
+  document.getElementById('trendChart').style.display=l7.length<1?'none':'';
+  if(tChart) tChart.destroy();
+  if(l7.length>=1){
+    tChart=new Chart(document.getElementById('trendChart'),{type:'line',data:{labels,datasets:[
+      {label:'AM %',data:aD,borderColor:'#52B788',backgroundColor:'rgba(82,183,136,.07)',tension:.4,pointRadius:4,fill:true},
+      {label:'PM %',data:pD,borderColor:'#5e9bdc',backgroundColor:'rgba(94,155,220,.05)',tension:.4,pointRadius:4,fill:true},
+      {label:'Loss %',data:lD,borderColor:'#f0a500',backgroundColor:'transparent',tension:.4,pointRadius:4,borderDash:[5,3]},
+    ]},options:{responsive:true,plugins:{legend:{labels:{color:'#7a8fa6',font:{family:'DM Sans',size:11}}}},
+      scales:{x:{ticks:{color:'#7a8fa6',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'}},
+              y:{ticks:{color:'#7a8fa6',callback:v=>v+'%'},grid:{color:'rgba(255,255,255,.04)'},min:0}}}});
+  }
+}
+
+// ── HISTORY ────────────────────────────────────────────────────────────────
+function renderHistory(){
+  const b=document.getElementById('hist-body');
+  if(!records.length){ b.innerHTML=`<tr><td colspan="28" class="empty" style="padding:28px">No readings yet.</td></tr>`; return; }
+  b.innerHTML=[...records].reverse().map(r=>{
+    const {a,p,loss}=recAvg(r);
+    const lp=loss!=null?`<span class="loss-pill" style="color:${lc(loss)};background:${lb(loss)}">${fmt(loss)}%</span>`:'—';
+    const gc=Array.from({length:N},(_,i)=>{
+      const v=r.readings?.[i+1]||{};
+      return `<td style="font-size:.68rem"><span style="color:var(--green-lite)">${v.am!=null?v.am.toFixed(1):'—'}</span><span style="color:var(--muted)">/</span><span style="color:var(--blue)">${v.pm!=null?v.pm.toFixed(1):'—'}</span></td>`;
+    }).join('');
+    return `<tr>
+      <td style="font-weight:500">${fmtD(r.date)}</td>
+      <td style="color:var(--muted)">${dayN(r.date)}</td>
+      <td style="color:var(--muted)">${r.week||''}</td>
+      <td style="color:var(--green-lite);font-family:var(--font-m)">${fmtP(a)}</td>
+      <td style="color:var(--blue);font-family:var(--font-m)">${fmtP(p)}</td>
+      <td>${lp}</td>${gc}
+      <td style="font-size:.68rem;color:var(--muted);max-width:90px;white-space:normal">${r.notes||''}</td>
+      <td><button class="del-btn" onclick="deleteRecord('${r.id}')">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── WEEKLY ─────────────────────────────────────────────────────────────────
+function renderWeekly(){
+  const wk={};
+  records.forEach(r=>{ const w=r.week||wkN(r.date); if(!wk[w]) wk[w]={dates:[],am:[],pm:[],loss:[]}; const {a,p,loss}=recAvg(r); wk[w].dates.push(r.date); if(a!=null)wk[w].am.push(a); if(p!=null)wk[w].pm.push(p); if(loss!=null)wk[w].loss.push(loss); });
+  const ks=Object.keys(wk).sort((a,b)=>+a-+b);
+  const g=document.getElementById('week-grid');
+  document.getElementById('week-empty').style.display=ks.length?'none':'';
+  g.innerHTML=ks.map(w=>{
+    const d=wk[w], A=avg(d.am), P=avg(d.pm), L=avg(d.loss);
+    const dates=d.dates.sort(), mn=dates[0], mx=dates[dates.length-1];
+    const ap=A?Math.min(A,40)/40*100:0, pp=P?Math.min(P,40)/40*100:0;
+    return `<div class="wk-card">
+      <div class="wk-n">Week ${w}</div>
+      <div class="wk-r">${fmtD(mn)} — ${fmtD(mx)}</div>
+      <div class="wk-s">
+        <div><div class="wk-v" style="color:var(--green-lite)">${fmtP(A)}</div><div class="wk-l">AM</div></div>
+        <div><div class="wk-v" style="color:var(--blue)">${fmtP(P)}</div><div class="wk-l">PM</div></div>
+        <div><div class="wk-v" style="color:${lc(L)}">${fmtP(L)}</div><div class="wk-l">Loss</div></div>
+      </div>
+      <div class="mb-row">AM <div class="mb-bg"><div class="mb-fill" style="width:${ap}%;background:var(--green-lite)"></div></div>${fmtP(A)}</div>
+      <div class="mb-row">PM <div class="mb-bg"><div class="mb-fill" style="width:${pp}%;background:var(--blue)"></div></div>${fmtP(P)}</div>
+      <div style="font-size:.62rem;color:var(--muted);margin-top:9px">${d.dates.length} day${d.dates.length!==1?'s':''} logged</div>
+    </div>`;
+  }).join('');
+}
+
+// ── GREENS COMPARE ─────────────────────────────────────────────────────────
+function renderGreens(){
+  const g=document.getElementById('cmp-grid'), e=document.getElementById('cmp-empty');
+  if(!records.length){ e.style.display=''; g.innerHTML=''; return; }
+  e.style.display='none';
+  g.innerHTML=Array.from({length:N},(_,i)=>{
+    const n=i+1, aV=[],pV=[];
+    records.forEach(r=>{ const v=r.readings?.[n]; if(v?.am!=null)aV.push(v.am); if(v?.pm!=null)pV.push(v.pm); });
+    const A=avg(aV), P=avg(pV), L=A!=null&&P!=null?A-P:null;
+    let badge='—', cls='s-nn';
+    if(L!=null){ if(L>8){badge='⚠ High';cls='s-hi';} else if(L>4){badge='Monitor';cls='s-wt';} else{badge='✓ Normal';cls='s-ok';} }
+    const lp=L!=null?Math.min(L/15*100,100):0;
+    return `<div class="cg">
+      <div class="cg-num">Green ${n}</div>
+      <div class="cg-row">
+        <div><div class="cg-v" style="color:var(--green-lite)">${fmtP(A)}</div><div class="cg-l">AM</div></div>
+        <div><div class="cg-v" style="color:var(--blue)">${fmtP(P)}</div><div class="cg-l">PM</div></div>
+        <div><div class="cg-v" style="color:${lc(L)}">${fmtP(L)}</div><div class="cg-l">Loss</div></div>
+      </div>
+      <div class="cg-bar"><div class="cg-bf" style="width:${lp}%;background:${lc(L)}"></div></div>
+      <div class="sb ${cls}">${badge}</div>
+      <div style="font-size:.58rem;color:var(--muted);margin-top:5px">${aV.length} readings</div>
+    </div>`;
+  }).join('');
+}
+
+// ── CSV EXPORT ─────────────────────────────────────────────────────────────
+window.exportCSV = () => {
+  const h=['Date','Day','Week','AM_Avg','PM_Avg','Daily_Loss',
+    ...Array.from({length:N},(_,i)=>`G${i+1}_AM`),...Array.from({length:N},(_,i)=>`G${i+1}_PM`),
+    ...Array.from({length:N},(_,i)=>`G${i+1}_Loss`),'Notes'];
+  const rows=records.map(r=>{
+    const {a,p,loss}=recAvg(r);
+    const gA=Array.from({length:N},(_,i)=>r.readings?.[i+1]?.am??'');
+    const gP=Array.from({length:N},(_,i)=>r.readings?.[i+1]?.pm??'');
+    const gL=Array.from({length:N},(_,i)=>{ const v=r.readings?.[i+1]; return v?.am!=null&&v?.pm!=null?(v.am-v.pm).toFixed(1):''; });
+    return [fmtD(r.date),dayN(r.date),r.week||'',fmt(a),fmt(p),fmt(loss),...gA,...gP,...gL,r.notes||''].join(',');
+  });
+  const el=document.createElement('a');
+  el.href=URL.createObjectURL(new Blob([[h.join(','),...rows].join('\n')],{type:'text/csv'}));
+  el.download=`moisture_${new Date().toISOString().slice(0,10)}.csv`;
+  el.click(); toast('CSV exported ✓');
+};
+</script>
+</body>
+</html>
